@@ -3,8 +3,10 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
   namespace :member do
-    root 'sessions#new'
-    resource :session, only: [:create, :destroy]
+    root 'sessions#index'
+    resources :sessions, only: [:index, :new] do
+      post :create_session, :create_user, on: :collection
+    end
     resources :users
   end
 end
