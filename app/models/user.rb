@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
 
   def self.find_for_oauth(auth)
-    user = self.where(uid: auth.uid, provider: auth.provider).first
+    user = self.where(email: auth.info.email).first
+    # 既存のアカウント有のユーザーがsnsログインした場合に、SNSからデータを拾う処理を書く
     unless user
       user = self.create(
         uid: auth.uid,
