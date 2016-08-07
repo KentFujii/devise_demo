@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   devise :omniauthable
 
-  attr_accessor :password, :password_confirmation
+  attr_accessor :password
 
   validates :email, presence: true, uniqueness: true
 
@@ -26,15 +26,6 @@ class User < ActiveRecord::Base
       nil
     end
   end
-
-  # def create_new_user(params)
-  #   self.email = params[:email]
-  #   raw_password = params[:password]
-  #   if raw_password && raw_password.kind_of?(String)
-  #     self.hashed_password = BCrypt::Password.create(raw_password)
-  #   end
-  #   self.save
-  # end
 
   def password=(raw_password)
     if raw_password.kind_of?(String)

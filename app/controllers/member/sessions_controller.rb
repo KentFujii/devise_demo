@@ -33,7 +33,7 @@ class Member::SessionsController < Member::Base
 
   def user_params
     params.require(:user).permit(
-      :email, :password, :password_confirmation
+      :email, :password
     )
   end
 
