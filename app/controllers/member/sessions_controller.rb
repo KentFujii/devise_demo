@@ -1,6 +1,7 @@
 class Member::SessionsController < Member::Base
   skip_before_action :authorize
   before_action :set_new_user, :redirect_to_top
+  # TODO: ログイン後にプロフィール用のformを出す処理を書く
 
   def index
   end

@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 
   def self.find_for_oauth(auth)
     user = self.where(email: auth.info.email).first
+    # TODO: 
     # 既存のアカウント有のユーザーがsnsログインした場合に、SNSからデータを拾う処理を書く
     unless user
       user = self.create(
@@ -20,6 +21,10 @@ class User < ActiveRecord::Base
   end
 
   def self.authenticate(params)
+    # TODO:
+    # SNSログインでアカウントを作成したユーザーがアドレスログインを試みた場合、
+    # 「パスワードが設定されていないユーザです。FacebookかLinkedInでログインしてください。」
+    # というメッセージを出す
     user = self.find_by(email: params[:email])
     if user && user.hashed_password.present? && BCrypt::Password.new(user.hashed_password) == params[:password]
       user
