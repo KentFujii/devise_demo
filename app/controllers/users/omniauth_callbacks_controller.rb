@@ -8,11 +8,11 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   private
-  
+
   def callback_from(provider)
     provider = provider.to_s
-    @user = User.find_for_oauth(request.env['omniauth.auth'])
+    @user = User.authenticate_for_oauth(request.env['omniauth.auth'])
     session["user_id"] = @user.id
-    redirect_to member_users_path
+    redirect_to edit_member_user_path(@user)
   end
 end

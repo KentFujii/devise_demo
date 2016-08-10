@@ -9,6 +9,8 @@
   </head>
 
   <body>
+    <%= content_tag(:div, flash.notice, class: 'alert alert-info', role: 'alert', style: 'margin:20px') if flash.notice %>
+    <%= content_tag(:div, flash.alert, class: 'alert alert-danger', role: 'alert', style: 'margin:20px') if flash.alert %>
     <%= yield %>
   </body>
 </html>

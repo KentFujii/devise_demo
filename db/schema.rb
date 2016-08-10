@@ -10,16 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160729152546) do
+ActiveRecord::Schema.define(version: 20160810053258) do
 
-  create_table "users", force: :cascade do |t|
-    t.string   "email",           default: "", null: false
+  create_table "emails", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.string  "address"
+    t.string  "provider"
+    t.string  "uid"
+    t.index ["user_id"], name: "index_emails_on_user_id", using: :btree
+  end
+
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "uid"
-    t.string   "provider"
     t.string   "hashed_password"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.boolean  "profile_delivered", default: false, null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
 end

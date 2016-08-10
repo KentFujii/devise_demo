@@ -1,0 +1,18 @@
+<% if @user.profile_delivered == true %>
+  <p>
+    ログイン完了
+  </p>
+<% else %>
+  <p>
+    フォームを入力してください
+  </p>
+  <%= form_for [:member, @user] do |form| %>
+    <%= form.fields_for :emails do |email_form| %>
+      <%= email_form.label :address %>
+      <%= email_form.text_field :address %>
+    <% end %>
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+    <%= form.submit 'update' %>
+  <% end %>
+<% end %>

@@ -1,31 +1,41 @@
 class User < ActiveRecord::Base
+  attr_accessor :password
   devise :omniauthable
 
-  attr_accessor :password
+  has_many :emails, dependent: :destroy
+  accepts_nested_attributes_for :emails
 
-  validates :email, presence: true, uniqueness: true
+  after_update :is_profile_delivered?
 
-  def self.find_for_oauth(auth)
-    user = self.where(email: auth.info.email).first
-    # TODO: 
-    # 既存のアカウント有のユーザーがsnsログインした場合に、SNSからデータを拾う処理を書く
-    unless user
+  def is_profile_delivered?
+    # TODO: 必要なプロフィール欄が全て埋まった場合に
+    # profile_deliveredをtrueにするcallback処理
+  end
+
+  def self.authenticate_for_oauth(auth)
+    email = Email.find_by(address: auth.info.email)
+    if email
+      user = email.user
+    else
       user = self.create(
-        uid: auth.uid,
+        name: auth.info.name
+      )
+      Email.create(
+        user:     user,
+        address:  self.get_email(auth),
         provider: auth.provider,
-        name: auth.info.name,
-        email: self.get_email(auth),
+        uid:      auth.uid
       )
     end
     user
   end
 
+  def authenticate_for_new_comer
+
+  end
+
   def self.authenticate(params)
-    # TODO:
-    # SNSログインでアカウントを作成したユーザーがアドレスログインを試みた場合、
-    # 「パスワードが設定されていないユーザです。FacebookかLinkedInでログインしてください。」
-    # というメッセージを出す
-    user = self.find_by(email: params[:email])
+    user = Email.find_by(address: params["emails_attributes"]["0"]["address"]).user
     if user && user.hashed_password.present? && BCrypt::Password.new(user.hashed_password) == params[:password]
       user
     else

@@ -1,8 +1,10 @@
 <%= link_to 'facebook', user_facebook_omniauth_authorize_path %>
 <%= link_to 'linkedin', user_linkedin_omniauth_authorize_path %>
 <%= form_for @user, url: :create_session_member_sessions do |form| %>
-  <%= form.label :email %>
-  <%= form.text_field :email %>
+  <%= form.fields_for :emails do |email_form| %>
+    <%= email_form.label :address %>
+    <%= email_form.text_field :address %>
+  <% end %>
   <%= form.label :password %>
   <%= form.password_field :password %>
   <%= form.submit 'sign in' %>

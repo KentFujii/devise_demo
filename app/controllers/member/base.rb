@@ -1,10 +1,18 @@
 class Member::Base < ApplicationController
   before_action :authorize
+  before_action :touch_profile
 
   def authorize
     unless current_user
       flash.alert = 'ログインしてください。'
-      redirect_to :member_root
+      return redirect_to :member_root
+    end
+  end
+
+  def touch_profile
+    if current_user && current_user.profile_delivered == false
+      flash.alert = 'プロフィールを入力してください。'
+      redirect_to edit_member_user_path(current_user)
     end
   end
 

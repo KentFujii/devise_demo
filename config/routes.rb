@@ -7,6 +7,6 @@ Rails.application.routes.draw do
     resources :sessions, only: [:index, :new] do
       post :create_session, :create_user, on: :collection
     end
-    resources :users
+    resources :users, only: [:edit, :update]
   end
 end
