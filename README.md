@@ -23,4 +23,3 @@ Things you may want to cover:
 
 * ...
 # devise_demo
-# api_demo
